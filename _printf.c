@@ -1,71 +1,58 @@
-#include main.h
+#include "main.h"
+#include <stdio.h>
+#include <stddef.h>
 #include <stdarg.h>
 
-init _printf(const char *fmt, ...)
+/**
+ * _printf - function that produces output according to format
+ * @format: mandatory argument
+ * Return: number of character printed
+ */
+
+int _printf(const char *format, ...)
 {
-    va_list ap;
+	va_list argz;
+	int i, j, num;
+	char *str;
+	int num_display = 0;
 
-    init i = 0;
+	va_start(argz, format);
 
-    va_start(ap, fmt);
+	for (i = 0; format[i] != '\0'; i++)
+	{
+		if (format[i] != '%')
+		{
+			_putchar(format[i]);
+			num_display++;
+		}
+		else
+		{
+			if (format[i + 1] == 'c')
+			{
+				_putchar(va_arg(argz, int));
+				num_display++;
+				i++;
+			}
+			else if (format[i + 1] == 's')
+			{
+				i++;
+				str = va_arg(argz, char *);
 
-    while (fmt[i] != '\0')
-    {
-        if (fmt[i] == '%')
-        {
-            i++;
-            switch (fmt[i])
-            {
-            case 'c':
-                _putchar(va_arg(ap, int));
-                break;
-            case 's':
-                _puts(va_arg(ap, char *));
-                break;
-            case 'd':
-                _putnbr(va_arg(ap, int));
-                break;
-            case 'i':
-                _putnbr(va_arg(ap, int));
-                break;
-            case 'u':
-                _putnbr(va_arg(ap, unsigned int));
-                break;
-            case 'o':
-                _putnbr_base(va_arg(ap, unsigned int), 8);
-                break;
-            case 'x':
-                _putnbr_base(va_arg(ap, unsigned int), 16);
-                break;
-            case 'X':
-                _putnbr_base(va_arg(ap, unsigned int), 16);
-                break;
-            case 'b':
-                _putnbr_base(va_arg(ap, unsigned int), 2);
-                break;
-            case 'S':
-                _puts(va_arg(ap, char *));
-                break;
-            case 'p':
-                _putnbr_base(va_arg(ap, unsigned int), 16);
-                break;
-            case '%':
-                _putchar('%');
-                break;
-            default:
-                _putchar('%');
-                _putchar(fmt[i]);
-                break;
-            }
-        }
-        else
-        {
-            _putchar(fmt[i]);
-        }
-        i++;
-    }
+				for (j = 0; str[j] != '\0'; j++)
+				{
+					_putchar(str[j]);
+					num_display++;
+				}
+			}
+			else if (format[i + 1] == '%')
+			{
+				i++;
+				_putchar('%');
+				num_display++;
+			}
+		}
+	}
 
-    va_end(ap);
-
-    return (n_displayed);
+	va_end(argz);
+	return (num_display);
 }
