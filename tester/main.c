@@ -6,11 +6,7 @@ int main(void)
 {
   int n = 0;
 
-  n =(_printf("my name is: %s, and Grade: %c, integer: %d, %%\n", "samuel", 'A', 1520));
-
-  printf("n: %d\n", n);
-  
-  n = (printf("my name is: %s, and Grade: %c, integer: %d, %%\n", "samuel", 'A', 1520));
+  n =(_printf("my name is: %s, and Grade: %c, %%\n", "samuel", 'A');
 
   printf("n: %d\n", n);
 
