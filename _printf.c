@@ -1,58 +1,161 @@
-#include "main.h"
-#include <stdio.h>
-#include <stddef.h>
-#include <stdarg.h>
+#include <stdlib.h>
+
+
 
 /**
+
+ * check_for_specifiers - checks if there is a valid format specifier
+
+ * @format: possible format specifier
+
+ *
+
+ * Return: pointer to valid function or NULL
+
+ */
+
+static int (*check_for_specifiers(const char *format))(va_list)
+
+{
+
+	unsigned int i;
+
+	print_t p[] = {
+
+		{"c", print_c},
+
+		{"s", print_s},
+
+		{"i", print_i},
+
+		{"d", print_d},
+
+		{"u", print_u},
+
+		{"b", print_b},
+
+		{"o", print_o},
+
+		{"x", print_x},
+
+		{"X", print_X},
+
+		{"p", print_p},
+
+		{"S", print_S},
+
+		{"r", print_r},
+
+		{"R", print_R},
+
+		{NULL, NULL}
+
+	};
+
+
+
+	for (i = 0; p[i].t != NULL; i++)
+
+	{
+
+		if (*(p[i].t) == *format)
+
+		{
+
+			break;
+
+		}
+
+	}
+
+	return (p[I].z);
+
+}
+
+
+
+/**
+
  * _printf - function that produces output according to format
- * @format: mandatory argument
- * Return: number of character printed
+
+ * @format: list of argument types passed to the function
+
+ *
+
+ * Return: number of characters to be printed
+
  */
 
 int _printf(const char *format, ...)
+
 {
+
+	unsigned int k = 0, num_display = 0;
+
 	va_list argz;
-	int i, j, num;
-	char *str;
-	int num_display = 0;
+
+	int (*z)(va_list);
+
+
+
+	if (format == NULL)
+
+		return (-1);
 
 	va_start(argz, format);
 
-	for (i = 0; format[i] != '\0'; i++)
-	{
-		if (format[i] != '%')
-		{
-			_putchar(format[i]);
-			num_display++;
-		}
-		else
-		{
-			if (format[i + 1] == 'c')
-			{
-				_putchar(va_arg(argz, int));
-				num_display++;
-				i++;
-			}
-			else if (format[i + 1] == 's')
-			{
-				i++;
-				str = va_arg(argz, char *);
+	while (format[k])
 
-				for (j = 0; str[j] != '\0'; j++)
-				{
-					_putchar(str[j]);
-					num_display++;
-				}
-			}
-			else if (format[i + 1] == '%')
-			{
-				i++;
-				_putchar('%');
-				num_display++;
-			}
+	{
+
+		for (; format[k] != '%' && format[k]; k++)
+
+		{
+
+			_putchar(format[k]);
+
+			num_display++;
+
 		}
+
+		if (!format[k])
+
+			return (num_display);
+
+		z = check_for_specifiers(&format[k + 1]);
+
+		if (z != NULL)
+
+		{
+
+			num_display += z(argz);
+
+			k += 2;
+
+			continue;
+
+		}
+
+		if (!format[k + 1])
+
+			return (-1);
+
+		_putchar(format[k]);
+
+		num_display++;
+
+		if (format[k + 1] == '%')
+
+			k += 2;
+
+		else
+
+			k++;
+
 	}
 
 	va_end(argz);
+
 	return (num_display);
+
 }
