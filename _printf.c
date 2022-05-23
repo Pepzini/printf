@@ -68,7 +68,7 @@ static int (*check_for_specifiers(const char *format))(va_list)
 
 	}
 
-	return (p[I].z);
+	return (p[i].z);
 
 }
 
